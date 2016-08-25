@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration status="info" name="loghouse">
+    <appenders>
+        <Console name="console" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d{yyyy-MM-dd'T'HH:mm:ss.SSSZ} %p %c.%method-%L %t MDC%X %msg %n" />
+        </Console>
+        <RollingFile name="loghouseAppender" fileName="/opt/glassfish/glassfish/domains/domain1/logs/loghouse.log" filePattern="/opt/glassfish/glassfish/domains/domain1/logs/loghouse.log.%d{yyyy-MM-dd}">
+            <PatternLayout pattern="%d{yyyy-MM-dd'T'HH:mm:ss.SSSZ} %p %c.%method-%L %t MDC%X %msg %n" />
+            <ThresholdFilter level="info" onMatch="ACCEPT" />
+            <Policies>
+                <SizeBasedTriggeringPolicy size="20 MB" />
+                <TimeBasedTriggeringPolicy interval="1" />
+            </Policies>
+        </RollingFile>
+    </appenders>
+    <loggers>
+        <Logger name="com.biostime.loghouse" level="info" additivity="false">
+            <appender-ref ref="console" />
+            <appender-ref ref="loghouseAppender" />
+        </Logger>
+        <Logger name="org.springframework" level="WARN" additivity="false">
+            <appender-ref ref="console" />
+            <appender-ref ref="loghouseAppender" />
+        </Logger>
+        <!-- 日志仓库logger -->
+        <Root level="info">
+            <appender-ref ref="console" />
+            <appender-ref ref="loghouseAppender" />
+        </Root>
+
+    </loggers>
+</configuration>
