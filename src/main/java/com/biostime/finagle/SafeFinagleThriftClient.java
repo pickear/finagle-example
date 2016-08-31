@@ -1,7 +1,7 @@
 package com.biostime.finagle;
 
 import com.biostime.finagle.interfaces.HelloInterface;
-import com.biostime.finagle.zipkin.ZipKinTracerHolder;
+import com.biostime.finagle.interfaces.impl.HelloInterfaceImpl;
 import com.biostime.finagle.zk.ZKClient;
 import com.twitter.common.zookeeper.ServerSetImpl;
 import com.twitter.finagle.Service;
@@ -19,6 +19,7 @@ import org.apache.thrift.protocol.TBinaryProtocol;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import scala.runtime.BoxedUnit;
+import zipkin.finagle.kafka.KafkaZipkinTracer;
 
 import java.net.SocketAddress;
 
@@ -32,35 +33,40 @@ public class SafeFinagleThriftClient extends BaseFinagleThrift{
 
     public static void main(String[] args) {
 
-        Service<ThriftClientRequest,byte[]> service = null;
+       /* System.setProperty("zipkin.initialSampleRate", "1.0");
+        System.setProperty("zipkin.kafka.bootstrapServers", "192.168.115.102:9092,192.168.115.106:9099");
+        System.setProperty("zipkin.kafka.topic", "zipkin2");
+
+        Service<ThriftClientRequest,byte[]> service = null;*/
         try {
-            final ServerSetImpl servers = new ServerSetImpl(zkClient, ZKClient.zkPath + "/" + HelloInterface.class.getSimpleName());
+      /*      final ServerSetImpl servers = new ServerSetImpl(zkClient, ZKClient.zkPath + "/" + HelloInterface.class.getSimpleName());
             Cluster<SocketAddress> cluster = new ZookeeperServerSetCluster(servers);
             service = ClientBuilder.safeBuild(ClientBuilder.get()
-                                                           .codec(ThriftClientFramedCodec.get())
-                                                           .hostConnectionLimit(100)
-                                                           .timeout(Duration.fromMilliseconds(5000))
-                                                           .cluster(cluster)
-                                                           .tracer(ZipKinTracerHolder.holdeTracer())
-                                              );
+                            .codec(ThriftClientFramedCodec.get())
+                            .hostConnectionLimit(100)
+                            .timeout(Duration.fromMilliseconds(5000))
+                            .cluster(cluster)
+                            .name("finagle_client")
+                            .tracer(new KafkaZipkinTracer())
+            );
 
-            HelloInterface.ServiceIface client = new HelloInterface.ServiceToClient(service,new TBinaryProtocol.Factory());
+            HelloInterface.ServiceIface client = new HelloInterface.ServiceToClient(service,new TBinaryProtocol.Factory());*/
 
-            Future<String> response = client.sayHello().onSuccess(new Function<String, BoxedUnit>() {
+             HelloInterface.ServiceIface client = FinagleThriftClientHolder.getService(HelloInterfaceImpl.class);
+            client.sayHello();
+             /*Future<String> response = client.sayHello().onSuccess(new Function<String, BoxedUnit>() {
 
                 @Override
                 public BoxedUnit apply(String response) {
                     log.info("Received response: " + response);
+                    log.info("[client]traceId : {},spanId : {}", Trace.id().traceId().toString(), Trace.id().spanId().toString());
                     return BoxedUnit.UNIT;
                 }
             });
-            Trace.record("starting some extremely expensive computation");
 
-            Await.result(response);
+            Await.result(response);*/
         } catch (Exception e) {
             e.printStackTrace();
-        }finally {
-            service.release();
         }
 
     }

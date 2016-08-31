@@ -8,17 +8,17 @@ import com.twitter.util.Future;
  * @author Dylan
  * @date 2016/7/18.
  */
-public class HelloInterfaceImpl implements HelloInterface.ServiceIface{
+public class HelloInterfaceImplTwo implements HelloInterface.ServiceIface{
 
     private String server;
-    public HelloInterfaceImpl(String _server){
+    public HelloInterfaceImplTwo(String _server){
         this.server = _server;
     }
 
     @Override
     public Future<String> sayHello() {
-        System.out.println(server + "one say hello");
-        HelloInterface.ServiceIface helloInterface = FinagleThriftClientHolder.getService(HelloInterfaceImplTwo.class);
+        System.out.println(server + "two say hello");
+        HelloInterface.ServiceIface helloInterface = FinagleThriftClientHolder.getService(HelloInterfaceImplThree.class);
         return helloInterface.sayHello();
     }
 
