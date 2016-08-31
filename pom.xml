@@ -20,8 +20,8 @@
         <!-- finagle start -->
         <dependency>
             <groupId>com.twitter</groupId>
-            <artifactId>finagle-core_2.10</artifactId>
-            <version>6.16.0</version>
+            <artifactId>finagle-core_2.11</artifactId>
+            <version>6.36.0</version>
         </dependency>
         <dependency>
             <groupId>com.twitter</groupId>
@@ -36,13 +36,23 @@
                     <groupId>log4j</groupId>
                     <artifactId>log4j</artifactId>
                 </exclusion>
+                <exclusion>
+                    <groupId>com.twitter</groupId>
+                    <artifactId>finagle-core_2.10</artifactId>
+                </exclusion>
             </exclusions>
         </dependency>
-        <dependency>
+        <!--<dependency>
             <groupId>com.twitter</groupId>
             <artifactId>finagle-thrift_2.10</artifactId>
             <version>6.16.0</version>
-        </dependency>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.twitter</groupId>
+                    <artifactId>finagle-core_2.10</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>-->
         <dependency>
             <groupId>com.twitter</groupId>
             <artifactId>util-core_2.10</artifactId>
@@ -52,6 +62,21 @@
             <groupId>com.twitter</groupId>
             <artifactId>finagle-zipkin_2.10</artifactId>
             <version>6.16.0</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.twitter</groupId>
+                    <artifactId>finagle-core_2.10</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.twitter</groupId>
+                    <artifactId>finagle-thrift_2.10</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>io.zipkin.finagle</groupId>
+            <artifactId>zipkin-finagle-kafka_2.11</artifactId>
+            <version>0.2.0</version>
         </dependency>
         <!-- finagle end-->
 
