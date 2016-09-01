@@ -27,7 +27,7 @@ import java.net.SocketAddress;
  * @author Dylan
  * @date 2016/7/19.
  */
-public class SafeFinagleThriftClient extends BaseFinagleThrift{
+public class SafeFinagleThriftClient{
 
     private final static Logger log = LoggerFactory.getLogger(SafeFinagleThriftClient.class);
 
@@ -52,9 +52,8 @@ public class SafeFinagleThriftClient extends BaseFinagleThrift{
 
             HelloInterface.ServiceIface client = new HelloInterface.ServiceToClient(service,new TBinaryProtocol.Factory());*/
 
-             HelloInterface.ServiceIface client = FinagleThriftClientHolder.getService(HelloInterfaceImpl.class);
-            client.sayHello();
-             /*Future<String> response = client.sayHello().onSuccess(new Function<String, BoxedUnit>() {
+            HelloInterface.ServiceIface client = FinagleThriftClientHolder.getService(HelloInterfaceImpl.class);
+            Future<String> response = client.sayHello().onSuccess(new Function<String, BoxedUnit>() {
 
                 @Override
                 public BoxedUnit apply(String response) {
@@ -64,7 +63,7 @@ public class SafeFinagleThriftClient extends BaseFinagleThrift{
                 }
             });
 
-            Await.result(response);*/
+            Await.result(response);
         } catch (Exception e) {
             e.printStackTrace();
         }

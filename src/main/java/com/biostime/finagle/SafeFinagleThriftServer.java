@@ -24,7 +24,7 @@ import java.util.HashMap;
  * @author Dylan
  * @date 2016/7/19.
  */
-public class SafeFinagleThriftServer extends BaseFinagleThrift{
+public class SafeFinagleThriftServer{
 
     private final static Logger log = LoggerFactory.getLogger(SafeFinagleThriftServer.class);
     private final static String local = "127.0.0.1";
