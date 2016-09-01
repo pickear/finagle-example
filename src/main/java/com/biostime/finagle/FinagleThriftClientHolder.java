@@ -1,5 +1,6 @@
 package com.biostime.finagle;
 
+import com.biostime.finagle.exception.ServiceNotFoundException;
 import com.biostime.finagle.helper.GodHands;
 import com.biostime.finagle.zk.ZKClient;
 import com.twitter.common.zookeeper.ServerSetImpl;
@@ -40,7 +41,7 @@ public final class FinagleThriftClientHolder extends BaseFinagleThrift{
     public static <T> T getService(Class<T> clazz){
 
         String clazzName = clazz.getSimpleName();
-
+        logger.info("get service [{}]",clazzName);
         Class<?>[] clazzs = GodHands.getInterfaces(clazz);
         for(Class<?> _clazz : clazzs){
             String className = _clazz.getName();
@@ -63,7 +64,7 @@ public final class FinagleThriftClientHolder extends BaseFinagleThrift{
             }
         }
 
-        throw new RuntimeException("can not find the service ["+clazzName+"]");
+        throw new ServiceNotFoundException("can not find the service ["+clazzName+"],mybe service not implement xx.ServiceIface interface?");
     }
 
     private FinagleThriftClientHolder(){}
